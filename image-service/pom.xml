@@ -64,6 +64,11 @@
 			<artifactId>mongodb</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.26.11</version>
+		</dependency>
 	</dependencies>
 
 	<build>
