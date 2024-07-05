@@ -32,7 +32,6 @@ public class ImageService {
     private final S3Presigner s3Presigner;
     private final ImageRepository imageRepository;
 
-//    public void uploadImage(ImageRequest imageRequest, byte[] bytes, String fileName) {
     public String uploadImage(ImageRequest imageRequest, byte[] bytes, String fileName) {
         fileName = generateFileName(fileName);
         try {
@@ -45,6 +44,8 @@ public class ImageService {
                     .description(imageRequest.description())
                     .country(imageRequest.country())
                     .city(imageRequest.city())
+                    .lat(imageRequest.lat())
+                    .lng(imageRequest.lng())
                     .fileName(fileName)
                     .build();
 
@@ -65,7 +66,7 @@ public class ImageService {
 //                            .toList();
 
         return images.stream()
-                .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getFileName()))
+                .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
                 .toList();
     }
 

@@ -25,7 +25,6 @@ public class ImageController {
     public String uploadImage(@RequestPart ImageRequest imageRequest, @RequestPart MultipartFile file) {
 //    public String uploadImage(@RequestParam(value = "file") MultipartFile file) {
         try {
-            System.out.println("imageRequest: " + imageRequest);
             byte[] bytes = file.getBytes();
             String filename = file.getOriginalFilename();
 //            imageService.uploadImage(imageRequest, bytes, filename);

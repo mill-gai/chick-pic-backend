@@ -1,12 +1,16 @@
 services:
-  mongodb:
-    image: mongo:7.0.5
-    container_name: chick-pic-mongodb
+  mysql:
+    image: mysql:8.3.0
+    container_name: chick-pic-mysql
     ports:
-      - "27017:27017"
+      - "3306:3306"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: image-service
+      MYSQL_ROOT_PASSWORD: password
     volumes:
-      - ./data:/data/db
+      - ./mysql:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: password
+#      MONGO_INITDB_DATABASE: image-service
+#    volumes:
+#      - ./data:/data/db
