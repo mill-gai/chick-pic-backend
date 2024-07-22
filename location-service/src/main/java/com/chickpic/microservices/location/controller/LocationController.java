@@ -17,7 +17,7 @@ public class LocationController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<LocationResponse> getAllLocations() { return locationService.getAllLocations(); }
+    public Location getLocationsByCountry(@RequestParam String country) { return locationService.getLocationsByCountry(country); }
 
 }
 

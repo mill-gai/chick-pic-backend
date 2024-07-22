@@ -13,17 +13,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class LocationService {
     private final LocationRepository locationRepository;
 
-    public List<LocationResponse> getAllLocations() {
-        List<Location> locations =  locationRepository.findAll();
-        return locations.stream()
-                        .map(location -> new LocationResponse(location.getId(), location.getCountry(), location.getCity(), location.getLat(), location.getLng(), location.getCountry() + ", " + location.getCity()))
-                        .toList();
+    public Location getLocationsByCountry(String country) {
+        Optional<Location> location =  locationRepository.findById(country);
+        return location.orElse(null);
+        //        return locations.stream()
+//                        .map(location -> new LocationResponse(location.getId(), location.getCountry(), location.getCity(), location.getLat(), location.getLng(), location.getCountry() + ", " + location.getCity()))
+//                        .toList();
     }
 
 //    @Autowired
