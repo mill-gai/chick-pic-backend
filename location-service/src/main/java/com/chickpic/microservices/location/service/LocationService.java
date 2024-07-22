@@ -20,12 +20,19 @@ import java.util.Optional;
 public class LocationService {
     private final LocationRepository locationRepository;
 
-    public Location getLocationsByCountry(String country) {
+    public Location getCitiesByCountry(String country) {
         Optional<Location> location =  locationRepository.findById(country);
         return location.orElse(null);
         //        return locations.stream()
 //                        .map(location -> new LocationResponse(location.getId(), location.getCountry(), location.getCity(), location.getLat(), location.getLng(), location.getCountry() + ", " + location.getCity()))
 //                        .toList();
+    }
+
+    public List<String> getAllCountries() {
+        List<Location> locations = locationRepository.findAll();
+        return locations.stream()
+                .map(Location::getCountry)
+                .toList();
     }
 
 //    @Autowired

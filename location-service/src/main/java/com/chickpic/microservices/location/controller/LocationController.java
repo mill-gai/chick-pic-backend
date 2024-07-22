@@ -15,9 +15,13 @@ import java.util.List;
 public class LocationController {
     private final LocationService locationService;
 
-    @GetMapping
+    @GetMapping("/getCitiesByCountry")
     @ResponseStatus(HttpStatus.OK)
-    public Location getLocationsByCountry(@RequestParam String country) { return locationService.getLocationsByCountry(country); }
+    public Location getCitiesByCountry(@RequestParam String country) { return locationService.getCitiesByCountry(country); }
+
+    @GetMapping("/getAllCountries")
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> getAllCountries() { return locationService.getAllCountries(); }
 
 }
 
