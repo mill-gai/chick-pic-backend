@@ -1,9 +1,11 @@
 package com.chickpic.microservices.image.controller;
 
+import com.chickpic.microservices.image.dto.ImageByPageResponse;
 import com.chickpic.microservices.image.dto.ImageRequest;
 import com.chickpic.microservices.image.dto.ImageResponse;
 import com.chickpic.microservices.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +46,12 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public List<String> getImageUrls(@RequestParam List<String> fileNames) {
         return fileNames.stream().map(imageService::createPresignedUrl).toList();
+    }
+
+    @GetMapping("/getImageByPage")
+    @ResponseStatus(HttpStatus.OK)
+    public ImageByPageResponse getImageByPage(@RequestParam int page, @RequestParam int size) {
+        return imageService.getImageByPage(page, size);
     }
 
 }

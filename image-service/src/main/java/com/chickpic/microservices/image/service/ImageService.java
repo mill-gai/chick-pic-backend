@@ -1,11 +1,14 @@
 package com.chickpic.microservices.image.service;
 
+import com.chickpic.microservices.image.dto.ImageByPageResponse;
 import com.chickpic.microservices.image.dto.ImageRequest;
 import com.chickpic.microservices.image.dto.ImageResponse;
 import com.chickpic.microservices.image.model.Image;
 import com.chickpic.microservices.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -68,6 +71,15 @@ public class ImageService {
         return images.stream()
                 .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
                 .toList();
+    }
+
+    public ImageByPageResponse getImageByPage(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Image> imagePage = imageRepository.findAll(pageRequest);
+        List<ImageResponse> images = imagePage.stream()
+                                    .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
+                                    .toList();
+        return new ImageByPageResponse(images, imagePage.isLast());
     }
 
     public String createPresignedUrl(String keyName) {
