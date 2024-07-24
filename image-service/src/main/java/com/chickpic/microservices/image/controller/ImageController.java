@@ -3,6 +3,7 @@ package com.chickpic.microservices.image.controller;
 import com.chickpic.microservices.image.dto.ImageByPageResponse;
 import com.chickpic.microservices.image.dto.ImageRequest;
 import com.chickpic.microservices.image.dto.ImageResponse;
+import com.chickpic.microservices.image.model.Image;
 import com.chickpic.microservices.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,8 +51,8 @@ public class ImageController {
 
     @GetMapping("/getImageByPage")
     @ResponseStatus(HttpStatus.OK)
-    public ImageByPageResponse getImageByPage(@RequestParam int page, @RequestParam int size) {
-        return imageService.getImageByPage(page, size);
+    public ImageByPageResponse getImageByPage(@RequestParam(defaultValue = "") String city, @RequestParam int page, @RequestParam int size) {
+        return imageService.getImageByPage(city, page, size);
     }
 
 }

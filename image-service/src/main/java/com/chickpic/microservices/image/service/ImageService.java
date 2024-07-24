@@ -25,6 +25,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -73,9 +74,14 @@ public class ImageService {
                 .toList();
     }
 
-    public ImageByPageResponse getImageByPage(int page, int size) {
+    public ImageByPageResponse getImageByPage(String city, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Image> imagePage = imageRepository.findAll(pageRequest);
+        Page<Image> imagePage;
+        if (Objects.equals(city, "")) {
+            imagePage = imageRepository.findAll(pageRequest);
+        } else {
+            imagePage = imageRepository.findAllByCity(city, pageRequest);
+        }
         List<ImageResponse> images = imagePage.stream()
                                     .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
                                     .toList();
