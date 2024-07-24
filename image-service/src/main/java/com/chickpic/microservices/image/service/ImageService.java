@@ -4,15 +4,14 @@ import com.chickpic.microservices.image.dto.ImageByPageResponse;
 import com.chickpic.microservices.image.dto.ImageRequest;
 import com.chickpic.microservices.image.dto.ImageResponse;
 import com.chickpic.microservices.image.model.Image;
+import com.chickpic.microservices.image.model.LocationsOnly;
 import com.chickpic.microservices.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -21,7 +20,6 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
@@ -86,6 +84,10 @@ public class ImageService {
                                     .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
                                     .toList();
         return new ImageByPageResponse(images, imagePage.isLast());
+    }
+
+    public List<LocationsOnly> getDistinctLocation() {
+        return imageRepository.findDistinctByCountryAndCity();
     }
 
     public String createPresignedUrl(String keyName) {
