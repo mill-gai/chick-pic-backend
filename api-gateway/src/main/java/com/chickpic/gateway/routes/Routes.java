@@ -14,7 +14,7 @@ public class Routes {
     @Bean
     public RouterFunction<ServerResponse> imageServiceRoute() {
         return route("image_service")
-                .route(RequestPredicates.path("/api/image/**"), HandlerFunctions.http("http://localhost:8080"))
+                .route(RequestPredicates.path("/api/image"), HandlerFunctions.http("http://localhost:8080"))
                 .build();
     }
 
