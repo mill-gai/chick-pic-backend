@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
-    Page<Image> findAllByCity(String city, Pageable pageable);
+    Page<Image> findAllByCountryAndCity(String country, String city, Pageable pageable);
     @Query("SELECT DISTINCT i.country AS country, i.city AS city, i.lat AS lat, i.lng AS lng FROM Image i")
     List<LocationsOnly> findDistinctByCountryAndCity();
 //    List<Image> findAllByCountry(String country);

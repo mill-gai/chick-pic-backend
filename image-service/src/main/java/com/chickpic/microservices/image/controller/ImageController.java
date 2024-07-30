@@ -47,10 +47,11 @@ public class ImageController {
         return fileNames.stream().map(imageService::createPresignedUrl).toList();
     }
 
+    //    public ImageByPageResponse getImageByPage(@RequestParam(defaultValue = "") String country, @RequestParam(defaultValue = "") String city, @RequestParam int page, @RequestParam int size) {
     @GetMapping("/getImageByPage")
     @ResponseStatus(HttpStatus.OK)
-    public ImageByPageResponse getImageByPage(@RequestParam(defaultValue = "") String city, @RequestParam int page, @RequestParam int size) {
-        return imageService.getImageByPage(city, page, size);
+    public ImageByPageResponse getImageByPage(@RequestParam String country, @RequestParam String city, @RequestParam int page, @RequestParam int size) {
+        return imageService.getImageByPage(country, city, page, size);
     }
 
     @GetMapping("/getDistinctLocation")
