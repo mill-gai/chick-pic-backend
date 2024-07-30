@@ -68,20 +68,20 @@ public class ImageService {
 //                            .toList();
 
         return images.stream()
-                .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
+                .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName(), image.getSubmissionDate()))
                 .toList();
     }
 
-    public ImageByPageResponse getImageByPage(String city, int page, int size) {
+    public ImageByPageResponse getImageByPage(String country, String city, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Image> imagePage;
         if (Objects.equals(city, "")) {
             imagePage = imageRepository.findAll(pageRequest);
         } else {
-            imagePage = imageRepository.findAllByCity(city, pageRequest);
+            imagePage = imageRepository.findAllByCountryAndCity(country, city, pageRequest);
         }
         List<ImageResponse> images = imagePage.stream()
-                                    .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
+                                    .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName(), image.getSubmissionDate()))
                                     .toList();
         return new ImageByPageResponse(images, imagePage.isLast());
     }
