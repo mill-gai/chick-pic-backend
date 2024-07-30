@@ -14,14 +14,14 @@ public class Routes {
     @Bean
     public RouterFunction<ServerResponse> imageServiceRoute() {
         return route("image_service")
-                .route(RequestPredicates.path("/api/image"), HandlerFunctions.http("http://localhost:8080"))
+                .route(RequestPredicates.path("/api/image/**"), HandlerFunctions.http("http://localhost:8080"))
                 .build();
     }
 
     @Bean
     public RouterFunction<ServerResponse> locationServiceRoute() {
         return route("location_service")
-                .route(RequestPredicates.path("/api/location"), HandlerFunctions.http("http://localhost:8081"))
+                .route(RequestPredicates.path("/api/location/**"), HandlerFunctions.http("http://localhost:8081"))
                 .build();
     }
 
