@@ -20,7 +20,10 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
+import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +52,9 @@ public class ImageService {
                     .lat(imageRequest.lat())
                     .lng(imageRequest.lng())
                     .fileName(fileName)
+                    .submissionDate(Timestamp.valueOf(LocalDateTime.now()))
                     .build();
+            System.out.println("image: " + image);
 
             s3Client.putObject(putObj, RequestBody.fromBytes(bytes));
             imageRepository.save(image);
