@@ -1,5 +1,7 @@
 package com.chickpic.microservices.location.controller;
 
+import com.chickpic.microservices.location.dto.CityResponse;
+import com.chickpic.microservices.location.dto.CountryResponse;
 import com.chickpic.microservices.location.dto.LocationResponse;
 import com.chickpic.microservices.location.model.Location;
 import com.chickpic.microservices.location.service.LocationService;
@@ -15,9 +17,13 @@ import java.util.List;
 public class LocationController {
     private final LocationService locationService;
 
-    @GetMapping
+    @GetMapping("/getCitiesByCountry")
     @ResponseStatus(HttpStatus.OK)
-    public List<LocationResponse> getAllLocations() { return locationService.getAllLocations(); }
+    public List<CityResponse> getCitiesByCountry(@RequestParam String country) { return locationService.getCitiesByCountry(country); }
+
+    @GetMapping("/getAllCountries")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CountryResponse> getAllCountries() { return locationService.getAllCountries(); }
 
 }
 

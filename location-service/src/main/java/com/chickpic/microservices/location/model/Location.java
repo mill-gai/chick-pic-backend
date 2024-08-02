@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Unwrapped;
+
+import java.util.List;
 
 @Document(value="location")
 @AllArgsConstructor
@@ -14,9 +17,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Location {
     @Id
-    private String id;
     private String country;
-    private String city;
-    private double lat;
-    private double lng;
+    private List<City> cities;
 }

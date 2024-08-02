@@ -1,15 +1,17 @@
 package com.chickpic.microservices.image.service;
 
+import com.chickpic.microservices.image.dto.ImageByPageResponse;
 import com.chickpic.microservices.image.dto.ImageRequest;
 import com.chickpic.microservices.image.dto.ImageResponse;
 import com.chickpic.microservices.image.model.Image;
+import com.chickpic.microservices.image.model.LocationsOnly;
 import com.chickpic.microservices.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -18,10 +20,13 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
-import java.net.URL;
+import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +52,9 @@ public class ImageService {
                     .lat(imageRequest.lat())
                     .lng(imageRequest.lng())
                     .fileName(fileName)
+                    .submissionDate(Timestamp.valueOf(LocalDateTime.now()))
                     .build();
+            System.out.println("image: " + image);
 
             s3Client.putObject(putObj, RequestBody.fromBytes(bytes));
             imageRepository.save(image);
@@ -66,8 +73,26 @@ public class ImageService {
 //                            .toList();
 
         return images.stream()
-                .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName()))
+                .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName(), image.getSubmissionDate()))
                 .toList();
+    }
+
+    public ImageByPageResponse getImageByPage(String country, String city, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Image> imagePage;
+        if (Objects.equals(city, "")) {
+            imagePage = imageRepository.findAll(pageRequest);
+        } else {
+            imagePage = imageRepository.findAllByCountryAndCity(country, city, pageRequest);
+        }
+        List<ImageResponse> images = imagePage.stream()
+                                    .map(image -> new ImageResponse(image.getTitle(), image.getDescription(), image.getCountry(), image.getCity(), image.getLat(), image.getLng(), image.getFileName(), image.getSubmissionDate()))
+                                    .toList();
+        return new ImageByPageResponse(images, imagePage.isLast());
+    }
+
+    public List<LocationsOnly> getDistinctLocation() {
+        return imageRepository.findDistinctByCountryAndCity();
     }
 
     public String createPresignedUrl(String keyName) {

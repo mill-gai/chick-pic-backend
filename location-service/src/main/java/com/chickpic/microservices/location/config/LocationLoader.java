@@ -28,10 +28,7 @@ public class LocationLoader implements CommandLineRunner {
             TypeReference<List<Location>> typeReference = new TypeReference<>(){};
             InputStream inputStream = new ClassPathResource("locationData.json").getInputStream();
             List<Location> locations = mapper.readValue(inputStream, typeReference);
-            System.out.println("locations: " + locations);
             locationRepository.saveAll(locations);
-        } else {
-            System.out.println("There are already one location in the database");
         }
     }
 }

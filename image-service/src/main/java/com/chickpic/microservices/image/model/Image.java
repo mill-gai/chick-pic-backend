@@ -3,6 +3,8 @@ package com.chickpic.microservices.image.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "image")
 @AllArgsConstructor
@@ -22,4 +24,5 @@ public class Image {
     private double lat;
     private double lng;
     private String fileName;
+    private Date submissionDate;
 }
